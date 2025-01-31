@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDoList</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+
+        <div class="title">
+            <h1 id="title">Task Manager</h1>
+        </div>
+
+        <div class="Search">
+            <input type="text" placeholder="Search Tasks . . . " id="searchInput">
+        </div>
+
+        <div class="AddTask">
+            <input type="text" placeholder="What needs to be done !?" id="taskInput">
+            <select id="Category" name="Category">
+                <option value="null">Select Category</option>
+                <option value="Work">Work</option>
+                <option value="Personal">Personal</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Health">Health</option>
+            </select>
+            <select id="priority" name="priority">
+                <option value="null">Select priority</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+            <button id="AddButton">ADD</button>
+        </div>
+
+        <div class="Filters">
+            <button id="All">All</button>
+            <button id="Work">Work</button>
+            <button id="Personal">Personal</button>
+            <button id="Shopping">Shopping</button>
+            <button id="Health">Health</button>
+        </div>
+
+        <hr id="hr">
+
+        <div class="Tasks">
+            <ul id="taskList" class="task-container"></ul>
+        </div>
+
+        <div class="infos">
+            <div class="infos-css" id="TotalTasks">
+                <h2>0</h2>
+                <h4>Total Tasks</h4>
+            </div>
+            <div class="infos-css" id="Completed">
+                <h2>0</h2>
+                <h4>Completed</h4>
+            </div>
+            <div class="infos-css" id="CompletionRate">
+                <h2>0%</h2>
+                <h5>Completion Rate</h5>
+            </div>
+            <div class="infos-css" id="Clear">
+                <button>Clear Completed</button>
+                <button>Clear All</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
