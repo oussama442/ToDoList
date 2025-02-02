@@ -204,8 +204,8 @@ body {
 /* Responsive Styles */
 @media (max-width: 1024px) {
     .container {
-        margin-left: 10vw;
-        width: 100%;
+        width: 90%;
+        margin-left: 5%;
     }
 
     .AddTask input,
@@ -238,11 +238,8 @@ body {
 }
 
 @media (max-width: 768px) {
-    .container {
-        width: 100%;
-        width: 90vw;
-    }
-
+   
+   
     .title {
         width: 100%;
         justify-content: center;
@@ -290,6 +287,11 @@ body {
 
 /* For very small screens (mobile devices) */
 @media (max-width: 480px) {
+    .container {
+        width: 99%;
+        margin-left: 0.5px;
+    }
+   
     #title {
         font-size: 1.8rem;
     }
