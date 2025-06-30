@@ -173,7 +173,7 @@ function saveTasks() {
     const tasks = [];
 
     taskItems.forEach(task => {
-        const taskName = task.querySelector('strong').textContent;
+        const taskName = task.querySelector('strong').textContent.trim();
         const taskCategory = task.querySelector('.category b').textContent;
         const taskPriority = task.querySelector('.priority b').textContent;
         const taskDate = task.querySelector('.created-date b').textContent;
@@ -190,6 +190,7 @@ function saveTasks() {
 
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
+
 
 function loadTasks() {
     const tasks = JSON.parse(localStorage.getItem('tasks'));
@@ -208,6 +209,7 @@ function loadTasks() {
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.checked = task.isChecked;
+
             checkbox.addEventListener('change', function () {
                 updateStats();
                 saveTasks(); // ✅ Save checkbox state when changed
@@ -243,3 +245,4 @@ function loadTasks() {
         adjustContainerSize();
     }
 }
+
