@@ -6,28 +6,23 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Event listeners for search input
     const searchInput = document.getElementById('searchInput');
     searchInput.addEventListener('input', searchTasks);
 
-    // Event listeners for filter buttons
     const filterButtons = document.querySelectorAll('.Filters button');
     filterButtons.forEach(button => {
         button.addEventListener('click', filterTasks);
     });
 
-    // Event listeners for clear tasks buttons
     const clearCompletedButton = document.querySelector('#Clear button:first-of-type');
     const clearAllButton = document.querySelector('#Clear button:last-of-type');
 
     clearCompletedButton.addEventListener('click', clearCompletedTasks);
     clearAllButton.addEventListener('click', clearAllTasks);
 
-    // Load tasks from local storage
     loadTasks();
 });
 
-// Function to add a task
 function addTask() {
     const taskInput = document.getElementById('taskInput');
     const taskText = taskInput.value.trim();
@@ -44,7 +39,6 @@ function addTask() {
         return;
     }
 
-    // Get the current date
     const now = new Date();
     const formattedDate = now.toLocaleDateString("en-US", {
         year: "numeric",
@@ -52,13 +46,15 @@ function addTask() {
         day: "2-digit",
     });
 
-    // Create task elements
     const li = document.createElement('li');
     li.classList.add('task-item');
 
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
-    checkbox.addEventListener('change', updateStats);
+    checkbox.addEventListener('change', function () {
+        updateStats();
+        saveTasks(); // ✅ Save checkbox state
+    });
 
     const taskDetails = document.createElement('div');
     taskDetails.classList.add('task-details');
@@ -77,19 +73,16 @@ function addTask() {
         li.remove();
         updateStats();
         adjustContainerSize();
-        saveTasks(); // Save tasks after deletion
+        saveTasks();
     };
 
-    // Append elements
     li.appendChild(checkbox);
     li.appendChild(taskDetails);
     li.appendChild(deleteButton);
     taskList.appendChild(li);
 
-    // Save tasks to local storage
     saveTasks();
 
-    // Clear input fields
     taskInput.value = '';
     categorySelect.value = 'null';
     prioritySelect.value = 'null';
@@ -98,7 +91,6 @@ function addTask() {
     adjustContainerSize();
 }
 
-// Function to adjust container size dynamically
 function adjustContainerSize() {
     const tasksContainer = document.querySelector('.Tasks');
     const taskList = document.getElementById('taskList');
@@ -110,7 +102,6 @@ function adjustContainerSize() {
     }
 }
 
-// Function to update stats
 function updateStats() {
     const totalTasks = document.querySelectorAll('.task-item').length;
     const completedTasks = document.querySelectorAll('.task-item input:checked').length;
@@ -121,7 +112,6 @@ function updateStats() {
     document.getElementById('CompletionRate').querySelector('h2').innerText = completionRate + '%';
 }
 
-// Function to search tasks
 function searchTasks() {
     const searchText = document.getElementById('searchInput').value.trim().toLowerCase();
     const taskItems = document.querySelectorAll('.task-item');
@@ -140,7 +130,6 @@ function searchTasks() {
     }
 }
 
-// Function to filter tasks by category
 function filterTasks() {
     const category = this.id;
     const taskItems = document.querySelectorAll('.task-item');
@@ -155,7 +144,6 @@ function filterTasks() {
     });
 }
 
-// Function to clear completed tasks with confirmation
 function clearCompletedTasks() {
     const confirmed = window.confirm("Are you sure you want to delete all completed tasks?");
     if (confirmed) {
@@ -169,28 +157,26 @@ function clearCompletedTasks() {
     }
 }
 
-// Function to clear all tasks with confirmation
 function clearAllTasks() {
     const confirmed = window.confirm("Are you sure you want to delete all tasks?");
     if (confirmed) {
         const taskList = document.getElementById('taskList');
-        taskList.innerHTML = ''; // Remove all tasks
+        taskList.innerHTML = '';
         updateStats();
         adjustContainerSize();
         saveTasks();
     }
 }
 
-// Function to save tasks to Local Storage
 function saveTasks() {
     const taskItems = document.querySelectorAll('.task-item');
     const tasks = [];
 
     taskItems.forEach(task => {
         const taskName = task.querySelector('strong').textContent;
-        const taskCategory = task.querySelector('.category').textContent.replace('Category: ', '').trim();
-        const taskPriority = task.querySelector('.priority').textContent.replace('Priority: ', '').trim();
-        const taskDate = task.querySelector('.created-date').textContent.replace('Created: ', '').trim();
+        const taskCategory = task.querySelector('.category b').textContent;
+        const taskPriority = task.querySelector('.priority b').textContent;
+        const taskDate = task.querySelector('.created-date b').textContent;
         const isChecked = task.querySelector('input[type="checkbox"]').checked;
 
         tasks.push({
@@ -205,13 +191,12 @@ function saveTasks() {
     localStorage.setItem('tasks', JSON.stringify(tasks));
 }
 
-// Function to load tasks from Local Storage
 function loadTasks() {
     const tasks = JSON.parse(localStorage.getItem('tasks'));
     if (tasks) {
         tasks.sort((a, b) => {
             const priorityOrder = { "High": 3, "Medium": 2, "Low": 1 };
-            return priorityOrder[b.priority] - priorityOrder[a.priority]; // Sort by priority (High -> Low)
+            return priorityOrder[b.priority] - priorityOrder[a.priority];
         });
 
         tasks.forEach(task => {
@@ -223,7 +208,10 @@ function loadTasks() {
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.checked = task.isChecked;
-            checkbox.addEventListener('change', updateStats);
+            checkbox.addEventListener('change', function () {
+                updateStats();
+                saveTasks(); // ✅ Save checkbox state when changed
+            });
 
             const taskDetails = document.createElement('div');
             taskDetails.classList.add('task-details');
@@ -242,7 +230,7 @@ function loadTasks() {
                 li.remove();
                 updateStats();
                 adjustContainerSize();
-                saveTasks(); // Save tasks after deletion
+                saveTasks();
             };
 
             li.appendChild(checkbox);
